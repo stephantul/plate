@@ -43,13 +43,14 @@ def compose(words, letter_codes, position_codes, adder, encoder):
             r = encoder(letter_codes[letter],
                         position_codes[idx])[0]
             code.append(r)
+
         yield adder(code)
 
 
 def gen_codes(letters, size, generate):
     """Generate codes which are binomially distributed."""
     codes = generate((len(letters), size))
-    return dict(zip(letters, codes.astype(np.int32)))
+    return dict(zip(letters, codes.astype(np.float32)))
 
 
 def gen_position(length, size, generate):
