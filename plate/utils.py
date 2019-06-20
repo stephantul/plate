@@ -1,8 +1,9 @@
 """Simple utility functions."""
 import numpy as np
+import statsmodels.api as sm
+
 from itertools import chain
 from tqdm import tqdm
-import statsmodels.api as sm
 from sklearn.preprocessing import StandardScaler
 
 
@@ -15,18 +16,32 @@ def lin_mod(xs, y):
     return model
 
 
+def memoize(function):
+    """
+    Simple memoization.
+
+    This assumes all arguments implement a.tostring() function.
+    This holds for numpy arrays.
+    """
+    memo = {}
+
+    def new_function(*args, **kwargs):
+        try:
+            return memo[tuple([x.tostring() for x in args])]
+        except KeyError:
+            r = function(*args, **kwargs)
+            memo[tuple([x.tostring() for x in args])] = r
+            return r
+    return new_function
+
+
 def compose(words, letter_codes, position_codes, adder, encoder):
     """Generate letter and position codes."""
-    # calculate codes once
-    memo = {}
     for x in tqdm(words):
         code = []
         for idx, letter in enumerate(x):
-            try:
-                r = memo[(idx, letter)]
-            except KeyError:
-                r = encoder(position_codes[idx], letter_codes[letter])[0]
-                memo[(idx, letter)] = r
+            r = encoder(letter_codes[letter],
+                        position_codes[idx])[0]
             code.append(r)
         yield adder(code)
 
