@@ -17,7 +17,10 @@ def majority(vecs):
 
 
 def encode(x, y):
-    return np.logical_xor(x, y)
+    r = np.logical_xor(x, y)
+    if np.ndim(r) == 1:
+        r = r[None, :]
+    return r
 
 
 def decode(x, y):
