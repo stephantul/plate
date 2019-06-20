@@ -1,6 +1,6 @@
 """Circular convolution and involution."""
 import numpy as np
-from .utils import compose, generate_both
+from .utils import compose, generate_both, memoize
 from functools import partial
 
 
@@ -12,6 +12,7 @@ def addition(p):
     return np.sum(p, 0)
 
 
+@memoize
 def circular_convolution(x, y):
     """Make a fast version."""
     if np.ndim(x) == 1:

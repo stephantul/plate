@@ -1,6 +1,6 @@
 """Splatter (kanerva)."""
 import numpy as np
-from .utils import compose, generate_both
+from .utils import compose, generate_both, memoize
 from functools import partial
 
 
