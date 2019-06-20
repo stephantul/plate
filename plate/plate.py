@@ -5,6 +5,7 @@ from functools import partial
 
 
 def generate(size):
+    """Generates normally distributed random vectors of size."""
     return np.random.normal(size=size)
 
 
@@ -33,9 +34,14 @@ def involution(x):
     return np.concatenate([x[:, None, 0], x[:, -1:0:-1]], 1)
 
 
-def decode(a, b):
-    """Decode a vector using involution."""
-    return circular_convolution(involution(a), b)
+def circular_correlation(x, y):
+    """Circular correlation is the inverse of circular convolution."""
+    return circular_convolution(involution(x), y)
+
+
+def decode(x, y):
+    """Simple renaming."""
+    return circular_correlation(x, y)
 
 
 compose = partial(compose, adder=addition, encoder=circular_convolution)

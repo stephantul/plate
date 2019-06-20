@@ -5,18 +5,21 @@ from functools import partial
 
 
 def generate(size):
-    return np.random.uniform(size=size) > .5
+    """Generate binary vectors by generating uniform samples."""
+    return np.random.uniform(size=size) >= .5
 
 
 def majority(vecs):
-    """Majority."""
+    """Weird binary vector addition."""
     s = np.mean(vecs, 0)
     b = np.flatnonzero(s == .5)
     s[b] = np.random.rand(len(b))
     return s > .5
 
 
+@memoize
 def encode(x, y):
+    """Encoding is done by XOR function."""
     r = np.logical_xor(x, y)
     if np.ndim(r) == 1:
         r = r[None, :]
@@ -24,6 +27,7 @@ def encode(x, y):
 
 
 def decode(x, y):
+    """XOR is an involution, so the inverse of XOR is also XOR."""
     return encode(x, y)
 
 
