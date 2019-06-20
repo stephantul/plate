@@ -1,4 +1,4 @@
-"""Splatter (kanerva)."""
+"""Spatter (kanerva)."""
 import numpy as np
 from .utils import compose, generate_both, memoize
 from functools import partial
