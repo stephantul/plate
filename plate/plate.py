@@ -1,5 +1,15 @@
 """Circular convolution and involution."""
 import numpy as np
+from .utils import compose, generate_both
+from functools import partial
+
+
+def generate(size):
+    return np.random.normal(size=size)
+
+
+def addition(p):
+    return np.sum(p, 0)
 
 
 def circular_convolution(x, y):
@@ -25,3 +35,7 @@ def involution(x):
 def decode(a, b):
     """Decode a vector using involution."""
     return circular_convolution(involution(a), b)
+
+
+compose = partial(compose, adder=addition, encoder=circular_convolution)
+generate_both = partial(generate_both, generate=generate)
