@@ -11,8 +11,7 @@ from plate import circular_convolution, decode
 dog, bite = np.random.normal(size=(2, 100))
 
 vec = circular_convolution(dog, bite)
-b = decode(bite, vec)
+b = decode(bite, vec)[0]
 
 # b should be more similar to dog than to other vectors.
-
 ```
