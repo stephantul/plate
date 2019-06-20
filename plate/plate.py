@@ -6,7 +6,7 @@ from functools import partial
 
 def generate(size):
     """Generates normally distributed random vectors of size."""
-    return np.random.normal(loc=0, scale=1/size[1], size=size)
+    return np.random.normal(scale=1/size[1], size=size)
 
 
 def addition(p):
@@ -18,7 +18,10 @@ def circular_convolution(x, y):
     """A fast version of the circular convolution."""
     # Stolen from:
     # http://www.indiana.edu/~clcl/holoword/Site/__files/holoword.py
-    return np.fft.ifft(np.fft.fft(x) * np.fft.fft(y)).real
+    z = np.fft.ifft(np.fft.fft(x) * np.fft.fft(y)).real
+    if np.ndim(z) == 1:
+        z = z[None, :]
+    return z
 
 
 def involution(x):
