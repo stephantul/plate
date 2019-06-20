@@ -17,10 +17,18 @@ def lin_mod(xs, y):
 
 def compose(words, letter_codes, position_codes, adder, encoder):
     """Generate letter and position codes."""
+    # calculate codes once
+    memo = {}
     for x in tqdm(words):
-        pcod = position_codes[:len(x)]
-        lett = np.array([letter_codes[l] for l in x])
-        yield adder(encoder(pcod, lett))
+        code = []
+        for idx, letter in enumerate(x):
+            try:
+                r = memo[(idx, letter)]
+            except KeyError:
+                r = encoder(position_codes[idx], letter_codes[letter])[0]
+                memo[(idx, letter)] = r
+            code.append(r)
+        yield adder(code)
 
 
 def gen_codes(letters, size, generate):
