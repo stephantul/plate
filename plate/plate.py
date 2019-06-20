@@ -16,6 +16,8 @@ def addition(p):
 @memoize
 def circular_convolution(x, y):
     """A fast version of the circular convolution."""
+    # Stolen from:
+    # http://www.indiana.edu/~clcl/holoword/Site/__files/holoword.py
     return np.fft.ifft(np.fft.fft(x) * np.fft.fft(y)).real
 
 
