@@ -36,6 +36,18 @@ def memoize(function):
 
 
 def compose(words, letter_codes, position_codes, adder, encoder):
+    """Generate word representations through letter and position codes."""
+    for x in tqdm(words):
+        code = []
+        for idx, letter in enumerate(x):
+            r = encoder(letter_codes[letter],
+                        position_codes[idx])[0]
+            code.append(r)
+
+        yield adder(code)
+
+
+def compose_bigrams(words, letter_codes, position_codes, adder, encoder):
     """Generate letter and position codes."""
     for x in tqdm(words):
         code = []
