@@ -6,7 +6,8 @@ from functools import partial
 
 def generate(size):
     """Generates normally distributed random vectors of size."""
-    return np.random.normal(scale=1/size[1], size=size)
+    x = np.random.normal(scale=1/size[1], size=size)
+    return x / np.linalg.norm(x, 1)
 
 
 def addition(p):
