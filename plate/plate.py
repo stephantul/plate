@@ -2,12 +2,22 @@
 import numpy as np
 from .utils import compose, generate_both, memoize
 from functools import partial
+from tqdm import tqdm
 
 
 def generate(size):
     """Generates normally distributed random vectors of size."""
-    x = np.random.normal(scale=1/size[1], size=size)
-    return x / np.linalg.norm(x, 1)
+    if isinstance(size, (int, float)):
+        size = (size,)
+    if len(size) == 1:
+        size = (1, size[0])
+    vecs = [np.random.normal(size=(1, size[1]), scale=1/size[1])]
+    for x in tqdm(range(size[0]-1)):
+        v = circular_convolution(vecs[0], vecs[0])
+        for x in vecs[1:]:
+            v = circular_convolution(v, x)
+        vecs.append(v)
+    return np.concatenate(vecs, 0)
 
 
 def addition(p):
