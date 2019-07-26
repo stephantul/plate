@@ -59,8 +59,10 @@ def compose_bigrams(words, letter_codes, position_codes, adder, encoder):
         yield adder(code)
 
 
-def gen_codes(letters, size, generate):
-    """Generate codes which are binomially distributed."""
+def gen_codes(words, size, generate):
+    """Generate codes."""
+    letters = set(chain.from_iterable(words))
+    letters.add(" ")
     codes = generate((len(letters), size))
     return dict(zip(letters, codes.astype(np.float32)))
 
@@ -73,5 +75,4 @@ def gen_position(length, size, generate):
 def generate_both(words, size, generate):
     """Generate both word and position codes at the same time."""
     m = max([len(x) for x in words])
-    letters = set(chain.from_iterable(words))
-    return gen_codes(letters, size, generate), gen_position(m, size, generate)
+    return gen_codes(words, size, generate), gen_position(m, size, generate)
