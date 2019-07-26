@@ -1,23 +1,19 @@
 """Circular convolution and involution."""
 import numpy as np
-from .utils import compose, generate_both, memoize
+from .utils import compose, generate_both, memoize, gen_codes
 from functools import partial
-from tqdm import tqdm
 
 
-def generate(size):
+def generate(size, norm=False):
     """Generates normally distributed random vectors of size."""
     if isinstance(size, (int, float)):
         size = (size,)
     if len(size) == 1:
         size = (1, size[0])
-    vecs = [np.random.normal(size=(1, size[1]), scale=1/size[1])]
-    for x in tqdm(range(size[0]-1)):
-        v = circular_convolution(vecs[0], vecs[0])
-        for x in vecs[1:]:
-            v = circular_convolution(v, x)
-        vecs.append(v)
-    return np.concatenate(vecs, 0)
+    vecs = np.random.normal(size=size, scale=1/size[1])
+    if norm:
+        vecs /= np.linalg.norm(vecs, axis=1)[:, None]
+    return vecs
 
 
 def addition(p):
@@ -54,3 +50,4 @@ def decode(x, y):
 
 compose = partial(compose, adder=addition, encoder=circular_convolution)
 generate_both = partial(generate_both, generate=generate)
+gen_codes = partial(gen_codes, generate=generate)
