@@ -1,19 +1,8 @@
 """Simple utility functions."""
 import numpy as np
-import statsmodels.api as sm
 
 from itertools import chain
 from tqdm import tqdm
-from sklearn.preprocessing import StandardScaler
-
-
-def lin_mod(xs, y):
-    """Run a linear model."""
-    xs = np.stack(xs, 1)
-    xs_ = StandardScaler().fit_transform(xs)
-    xs_ = sm.add_constant(xs_)
-    model = sm.OLS(y, xs_).fit()
-    return model
 
 
 def memoize(function):

@@ -10,7 +10,7 @@ def generate(size, norm=False):
         size = (size,)
     if len(size) == 1:
         size = (1, size[0])
-    vecs = np.random.normal(size=size, scale=1/size[1])
+    vecs = np.random.normal(0, size=size, scale=1/size[1])
     if norm:
         vecs /= np.linalg.norm(vecs, axis=1)[:, None]
     return vecs
@@ -20,7 +20,6 @@ def addition(p):
     return np.sum(p, 0)
 
 
-@memoize
 def circular_convolution(x, y):
     """A fast version of the circular convolution."""
     # Stolen from:
